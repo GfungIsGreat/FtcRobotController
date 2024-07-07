@@ -55,8 +55,8 @@ import static org.firstinspires.ftc.teamcode.drive.DriveConstants.kV;
  */
 @Config
 public class SampleMecanumDrive extends MecanumDrive {
-    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(0, 0, 0);
-    public static PIDCoefficients HEADING_PID = new PIDCoefficients(0, 0, 0);
+    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(2, 0.01, 4);
+    public static PIDCoefficients HEADING_PID = new PIDCoefficients(15, 0, 0);
 
     public static double LATERAL_MULTIPLIER = 1.42;
 
@@ -131,6 +131,8 @@ public class SampleMecanumDrive extends MecanumDrive {
 
         List<Integer> lastTrackingEncPositions = new ArrayList<>();
         List<Integer> lastTrackingEncVels = new ArrayList<>();
+
+
 
         // TODO: if desired, use setLocalizer() to change the localization method
         // setLocalizer(new StandardTrackingWheelLocalizer(hardwareMap, lastTrackingEncPositions, lastTrackingEncVels));
@@ -222,11 +224,13 @@ public class SampleMecanumDrive extends MecanumDrive {
         }
     }
 
+
     public void setZeroPowerBehavior(DcMotor.ZeroPowerBehavior zeroPowerBehavior) {
         for (DcMotorEx motor : motors) {
             motor.setZeroPowerBehavior(zeroPowerBehavior);
         }
     }
+
 
     public void setPIDFCoefficients(DcMotor.RunMode runMode, PIDFCoefficients coefficients) {
         PIDFCoefficients compensatedCoefficients = new PIDFCoefficients(
@@ -301,7 +305,7 @@ public class SampleMecanumDrive extends MecanumDrive {
 
     @Override
     public Double getExternalHeadingVelocity() {
-        return 0.0;
+        return (double) imu.getRobotAngularVelocity().xRotationRate;
     }
 
     public static TrajectoryVelocityConstraint getVelocityConstraint(double maxVel, double maxAngularVel, double trackWidth) {

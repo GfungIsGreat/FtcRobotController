@@ -46,7 +46,7 @@ public class Auton_blue_nearboard_v2 extends LinearOpMode {
         robot.init(hardwareMap);
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
-        Pose2d startPose = new Pose2d(16, 64, Math.toRadians(270));
+        Pose2d startPose = new Pose2d(16.43, 63.34, Math.toRadians(90));
         drive.setPoseEstimate(startPose);
 
         ElapsedTime timer = new ElapsedTime();
@@ -58,10 +58,10 @@ public class Auton_blue_nearboard_v2 extends LinearOpMode {
         double last=0;
 
         TrajectorySequence left = drive.trajectorySequenceBuilder(startPose)
-                .splineTo(new Vector2d(36.34, 52.57), Math.toRadians(45.65))
-                .lineToLinearHeading(new Pose2d(36.70, 34.77, Math.toRadians(0.00)))
+                .lineToSplineHeading(new Pose2d(36.34, 36, Math.toRadians(0)))
+                //.lineToLinearHeading(new Pose2d(36.70, 34.77, Math.toRadians(0.00)))
                 .addTemporalMarker(()->{
-                    scoringStage = scoring_stage.READY_SCORE;
+                scoringStage = scoring_stage.READY_SCORE;
                 })
                 //.waitSeconds(1)
                 .build();
@@ -132,7 +132,7 @@ public class Auton_blue_nearboard_v2 extends LinearOpMode {
         while (opModeIsActive()){
             cur = timer.milliseconds();
             cur2 = timer.milliseconds();
-
+/*
             switch (cameraStage){
                 case LEFT:
                     drive.followTrajectorySequence(left);
@@ -151,7 +151,9 @@ public class Auton_blue_nearboard_v2 extends LinearOpMode {
                 case FINISH:
                     robot.retractSlider();
                     break;
-            }
+            }*/
+            drive.followTrajectorySequence(left);
+            cameraStage=camera_stage.SCORING;
             switch (scoringStage){
                 case GROUND_GRIP:
                     cameraStage=camera_stage.FINISH;
@@ -184,11 +186,11 @@ public class Auton_blue_nearboard_v2 extends LinearOpMode {
                     }
                     break;
                 case READY_SCORE:
-                    if (cur>200){
-                        cur=0;
-                        timer.reset();
-                        scoringStage = scoring_stage.SCORING;
-                    }
+                    //if (cur>200){
+                        //cur=0;
+                       // timer.reset();
+                        //scoringStage = scoring_stage.SCORING;
+                    //}
                 case GROUND:
                     robot.setSlider(800); // TODO: tune slider pos
                     robot.setArm(0);
